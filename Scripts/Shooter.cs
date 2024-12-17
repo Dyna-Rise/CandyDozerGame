@@ -40,7 +40,7 @@ public class Shooter : MonoBehaviour
         //画面のサイズとInputの割合からCandyの生成座標を計算して戻す
         float x = baseWidth * (Input.mousePosition.x / Screen.width) - (baseWidth / 2);
 
-        return new Vector3(x, 0, 0);
+        return transform.position + new Vector3(x, 0, 0);
     }
 
 
