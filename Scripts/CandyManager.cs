@@ -34,7 +34,6 @@ public class CandyManager : MonoBehaviour
         }
     }
 
-    //RecoverCandyという名のコルーチンの設計
     IEnumerator RecoverCandy()
     {
         //カウントを10

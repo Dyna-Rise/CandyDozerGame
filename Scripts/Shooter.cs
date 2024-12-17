@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
+    const int MaxShotPower = 5; //ショットパワーの上限
+    const int RecoverySeconds = 3; //ショットパワーの回復までの時間
+
+    //リアルタイムに変動する残りのショットパワー
+    int shotPower = MaxShotPower;
+
     public GameObject[] candyPrefabs; //生成されるCandy
 
     public Transform candyParentTransform;//HierarchyでCandiesグループがどれかを指定
@@ -51,6 +57,8 @@ public class Shooter : MonoBehaviour
     {
         //Candyのストックが0以下ならすぐやめる
         if (candyManager.GetCandyAmount() <= 0) return;
+        //ショットパワーがなくなってもすぐやめる
+        if (shotPower <= 0) return;
 
         //Candyオブジェクトを生成
         GameObject candy = Instantiate(
@@ -71,5 +79,38 @@ public class Shooter : MonoBehaviour
 
         //Candyのストックを消費
         candyManager.ConsumeCandy();
+
+        //ShotPowerを消費
+        ConsumePower();
+    }
+
+    void OnGUI()
+    {
+        //文字色は黒
+        GUI.color = Color.black;
+
+        //ShotPowerの残数を「+」で表現
+        string label = "";
+        for (int i = 0; i < shotPower; i++) label += "+";
+
+        //変数labelの内容を画面上に表示
+        GUI.Label(new Rect(50,65,100,30),label);
+    }
+
+    //ShotPowerの消費
+    void ConsumePower()
+    {
+        //ShotPowerを1マイナス
+        shotPower--;
+        //消費と同時に回復スタート
+        StartCoroutine(RecoverPower());
+    }
+
+    IEnumerator RecoverPower()
+    {
+        //定数RecoverySeconds秒まった後にShotPower回復
+        yield return new WaitForSeconds(RecoverySeconds);
+        //ShotPower回復
+        shotPower++;
     }
 }
