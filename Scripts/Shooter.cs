@@ -8,6 +8,8 @@ public class Shooter : MonoBehaviour
 
     public Transform candyParentTransform;//HierarchyでCandiesグループがどれかを指定
 
+    public CandyManager candyManager;
+
     public float shotForce; //発射するパワー
     public float shotTorque; //発射時の回転
 
@@ -47,6 +49,9 @@ public class Shooter : MonoBehaviour
     //自作メソッド
     public void Shot()
     {
+        //Candyのストックが0以下ならすぐやめる
+        if (candyManager.GetCandyAmount() <= 0) return;
+
         //Candyオブジェクトを生成
         GameObject candy = Instantiate(
             SampleCandy(),
@@ -63,5 +68,8 @@ public class Shooter : MonoBehaviour
         candyRigidBody.AddForce(transform.forward * shotForce);
         //回転
         candyRigidBody.AddTorque(new Vector3(0,shotTorque,0));
+
+        //Candyのストックを消費
+        candyManager.ConsumeCandy();
     }
 }
