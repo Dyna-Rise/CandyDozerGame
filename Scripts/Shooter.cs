@@ -10,6 +10,9 @@ public class Shooter : MonoBehaviour
     //リアルタイムに変動する残りのショットパワー
     int shotPower = MaxShotPower;
 
+    //AudioSourceコンポーネントを扱える変数
+    AudioSource shotSound;
+
     public GameObject[] candyPrefabs; //生成されるCandy
 
     public Transform candyParentTransform;//HierarchyでCandiesグループがどれかを指定
@@ -24,7 +27,8 @@ public class Shooter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //自分のオブジェクトについているAudioSouceコンポーネントの情報を参照できるようにする
+        shotSound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -82,6 +86,10 @@ public class Shooter : MonoBehaviour
 
         //ShotPowerを消費
         ConsumePower();
+
+        //サウンドを再生
+        //AudioSourceコンポーネントにセッティングされているAudioClipを再生
+        shotSound.Play();
     }
 
     void OnGUI()
