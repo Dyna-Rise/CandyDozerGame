@@ -7,6 +7,10 @@ public class CandyDestroyer : MonoBehaviour
     public CandyManager candyManager; //CandyManagerスクリプト
     public int reward; //補充数の設定
 
+    public GameObject effectPrefab; //プレハブ化したエフェクトを指定
+
+    public Vector3 effectRotation; //生成されるエフェクトオブジェクトの角度を決めておく
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +33,16 @@ public class CandyDestroyer : MonoBehaviour
 
             //ぶつかった相手otherを削除
             Destroy(other.gameObject);
+
+            if (effectPrefab != null)
+            {
+                //Candyエフェクトを生成
+                Instantiate(
+                    effectPrefab,
+                    other.transform.position,
+                    Quaternion.Euler(effectRotation)
+                 );
+            }
         }
     }
 }
